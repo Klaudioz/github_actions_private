@@ -1,0 +1,18 @@
+on:
+  pull_request:
+    branches: master
+    types: labeled
+
+jobs:
+  tests:
+    runs-on: ubuntu-18.04
+    if: "! contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
+    steps:
+    - name: Send labels
+      id: send_labels
+      if: contains(github.event.pull_request.labels.*.name, 'e2e_gcloud') || contains(github.event.pull_request.labels.*.name, 'e2e_aws') || contains(github.event.pull_request.labels.*.name, 'e2e_do') || contains(github.event.pull_request.labels.*.name, 'e2e_azure') || contains(github.event.pull_request.labels.*.name, 'e2e_eks')
+      uses: klaudioz/github_actions_private@master
+      with:
+        labels: ${{ toJson(github.event.pull_request.labels) }}
+      env:
+        shippable_token: ${{ secrets.SHIPPABLE_TOKEN }}

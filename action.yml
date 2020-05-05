@@ -1,0 +1,11 @@
+name: 'Automation to kick off certain tests in certain clouds for a PR'
+description: 'Get labels from PR'
+inputs:
+  labels:
+    description: 'Get labels from PR'
+    required: true
+runs:
+  using: 'docker'
+  image: 'build_tools/gha_image/Dockerfile'
+  args:
+    - ${{ inputs.labels }}
